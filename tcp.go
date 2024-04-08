@@ -6,9 +6,8 @@ import (
 	"time"
 )
 
-// TCP creates a fetcher that retrieves data over a TCP connection.
-// `address` is the TCP address of the server in the form "host:port".
-// `request` is an optional string sent to the server upon connection.
+// TCP is a Fetcher that connects to a TCP server and reads the response.
+// This is more of an example since there is no handling of the response.
 func TCP(addr net.Addr, request string) Fetcher {
 	return func(p *Proof) error {
 		conn, err := net.Dial("tcp", addr.String())
@@ -20,7 +19,6 @@ func TCP(addr net.Addr, request string) Fetcher {
 		// Set a deadline for the operation
 		conn.SetDeadline(time.Now().Add(5 * time.Second))
 
-		// If a request is specified, send it.
 		if request != "" {
 			if _, err := conn.Write([]byte(request)); err != nil {
 				return err
